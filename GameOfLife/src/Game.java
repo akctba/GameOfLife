@@ -11,7 +11,9 @@ public class Game {
 		Game game = new Game();
 
 		// initial
+		game.randomInitialization();
 		game.setInitialState();
+		
 
 		Scanner input = new Scanner(System.in);
 
@@ -107,6 +109,16 @@ public class Game {
 				System.out.print(y ? " #" : " ·");
 			System.out.println();
 		}
+	}
+	
+	private void randomInitialization() {
+		for (int x=0; x<Game.SIZE; x++ ) {
+			for (int y=0; y<Game.SIZE; y++) {
+				double r = Math.random() * 100;
+				this.board[x][y] = (r < 40);
+			}
+		}
+		
 	}
 
 	// Clear console/terminal
