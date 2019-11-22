@@ -144,8 +144,11 @@ public class Game {
 			for (int vert=0; vert<Game.YSIZE; vert++) {
 				//calculate a random number between 1 and 100
 				double r = Math.random() * 100;
+				boolean before = this.board[horiz][vert];
 				//if this number is less then the percentage, change to true
-				this.board[horiz][vert] = (r < percentage);
+				//if the position already is true keeps true (conditional OR)
+				boolean turnOn = before || (r < percentage);
+				this.board[horiz][vert] = turnOn;
 			}
 		}
 		
