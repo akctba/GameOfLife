@@ -1,17 +1,29 @@
 import java.util.Scanner;
 
+/**
+ * Game of life - CICCC
+ * @author alexkayser
+ *
+ */
 public class Game {
 
-	public final static int SIZE = 20;
+	//public final static int SIZE = 20;
+	public final static int XSIZE = 20;
+	public final static int YSIZE = 30;
 
-	boolean[][] board = new boolean[Game.SIZE][Game.SIZE];
+	//the main game board
+	boolean[][] board = new boolean[Game.XSIZE][Game.YSIZE];
 
+	/**
+	 * Starts the game and controls steps
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		Game game = new Game();
 
 		// initial
-		game.randomInitialization();
+		//game.randomInitialization();
 		game.setInitialState();
 		
 
@@ -33,6 +45,13 @@ public class Game {
 			//calculate next generation
 			game.next();
 			
+			//if typed "random" on console it fills a percentage of cells on the board.
+			if("random".equalsIgnoreCase(cmd)) {
+				System.out.print("Percentage [1-100]: ");
+				int percentage = input.nextInt();
+				game.randomInitialization(percentage);
+			}
+			
 		}
 
 		input.close();
@@ -40,7 +59,9 @@ public class Game {
 	}
 
 	private void next() {
-		boolean[][] next = new boolean[Game.SIZE][Game.SIZE];
+		
+		//temporary hidden board
+		boolean[][] next = new boolean[Game.XSIZE][Game.YSIZE];
 		
 		//starting at the second line
 		for (int i=1; i<this.board.length-1; i++) {
@@ -73,25 +94,23 @@ public class Game {
 		this.board = next;
 	}
 
+	/**
+	 * Set initial 
+	 */
 	private void setInitialState() {
-		
-		// sequence
-//		table[0][1] = true;
-//		table[0][2] = true;
-//		table[0][3] = true;
 
 		// toad
-//		table[4][3] = true;
-//		table[4][4] = true;
-//		table[4][5] = true;
-//		table[5][2] = true;
-//		table[5][3] = true;
-//		table[5][4] = true;
+		board[14][3] = true;
+		board[14][4] = true;
+		board[14][5] = true;
+		board[15][2] = true;
+		board[15][3] = true;
+		board[15][4] = true;
 		
 		// Blinker
-//		table[7][8] = true;
-//		table[7][9] = true;
-//		table[7][10] = true;
+		board[7][13] = true;
+		board[7][14] = true;
+		board[7][15] = true;
 		
 		// Glider
 		board[1][2] = true;
@@ -103,6 +122,9 @@ public class Game {
 
 	}
 
+	/**
+	 * Prints the board using characters
+	 */
 	private void print() {
 		for (boolean[] x : board) {
 			for (boolean y : x)
@@ -111,17 +133,27 @@ public class Game {
 		}
 	}
 	
-	private void randomInitialization() {
-		for (int x=0; x<Game.SIZE; x++ ) {
-			for (int y=0; y<Game.SIZE; y++) {
+	/**
+	 * It fill out a percentage of the board
+	 * @param percentage 
+	 */
+	private void randomInitialization(int percentage) {
+		// iterate lines
+		for (int horiz=0; horiz<Game.XSIZE; horiz++ ) {
+			//iterate colunms
+			for (int vert=0; vert<Game.YSIZE; vert++) {
+				//calculate a random number between 1 and 100
 				double r = Math.random() * 100;
-				this.board[x][y] = (r < 40);
+				//if this number is less then the percentage, change to true
+				this.board[horiz][vert] = (r < percentage);
 			}
 		}
 		
 	}
 
-	// Clear console/terminal
+	/**
+	 * trying to clear the console, not in the best way yet.
+	 */
 	public final static void clearConsole() {
 		//a ugly way to clear the console...
 		for(int i=0; i<=100; i++)
